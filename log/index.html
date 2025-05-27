@@ -358,9 +358,48 @@
         <span>2025-05-27 12:22:23</span>
         <span>星期二</span>
       </h2>
-      <h1 class="log-main-title"><a href="/./log/logName.html">logName</a></h1>
-      <div class="log-wrapper false" style="max-height: 1000px;">
-        <article class="article-content"></article>
+      <h1 class="log-main-title"><a href="/./log/%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AE%B0%E5%BD%95.html">第一次记录</a></h1>
+      <div class="log-wrapper more" style="max-height: 1000px;">
+        <article class="article-content"><p>昨天搞得好好的hexo博客但是不知道为什么没有办法上传到github上，导致netlify无法自动部署更新界面，无脑的删了重做</p>
+<p>今天依旧没有发现问题，但是能上传到github上是因为用了强制上传，上传的指令有如下</p>
+<table>
+<thead>
+<tr>
+<th align="left">指令</th>
+<th align="left">作用</th>
+<th align="left">关键区别</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>git push</code></td>
+<td align="left">推送当前分支</td>
+<td align="left">需提前绑定上游分支</td>
+<td align="left">日常推送</td>
+</tr>
+<tr>
+<td align="left"><code>git push origin main</code></td>
+<td align="left">推送到指定分支</td>
+<td align="left">不依赖上游绑定</td>
+<td align="left">临时推送</td>
+</tr>
+<tr>
+<td align="left"><code>git push --set-upstream origin main</code></td>
+<td align="left">首次建立分支关联</td>
+<td align="left">安全</td>
+<td align="left">第一次推送新分支</td>
+</tr>
+<tr>
+<td align="left"><code>git push --force origin main</code></td>
+<td align="left">强制覆盖远程分支</td>
+<td align="left">高风险</td>
+<td align="left">修改本地历史后强制同步</td>
+</tr>
+</tbody></table>
+<p>原先是git push，但是没有作用，今天用了<code>git push --force-with-lease</code>或者<code>git push --set-upstream origin main</code>就ok了</p>
+</article>
+        
+          <a href="/./log/%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AE%B0%E5%BD%95.html" class="more-title">阅读更多</a> 
         
       </div>
     </div>
