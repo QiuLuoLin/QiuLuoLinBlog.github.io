@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"Hello World","path":"2025/05/27/hello-world/"},{"title":"page","path":"2025/05/27/page/"},{"title":"page","path":"2025/05/27/page模板/"}]`)
+  const posts = JSON.parse(`[{"title":"Hello World","path":"2025/05/27/hello-world/"},{"title":"page","path":"2025/05/27/page/"},{"title":"page","path":"2025/05/27/page模板/"},{"title":"pagenow","path":"2025/05/27/pagenow/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -327,7 +327,7 @@
       </h5>
       <p class="main-left--subtitle">
         <span>文章数目：</span>
-        <span>3 篇</span>
+        <span>4 篇</span>
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
@@ -377,6 +377,13 @@
                                         <li class="archive-list__post">
                                             <div>
                                                 <a href="/2025/05/27/page模板/">page</a>
+                                                <span>05月27日</span>
+                                            </div>
+                                        </li>
+                                    
+                                        <li class="archive-list__post">
+                                            <div>
+                                                <a href="/2025/05/27/pagenow/">pagenow</a>
                                                 <span>05月27日</span>
                                             </div>
                                         </li>
@@ -449,7 +456,7 @@
   }
 
   setOperateItem()
-  const musics = JSON.parse(`[{"name":"时落叶影","artist":"Peguin Piano","url":"music/ShiLuoYeYing.mp3","cover":"https://raw.githubusercontent.com/QiuLuoLin/QiuLinBlogPicture/main/img/202505261512444.png"},{"name":"时落之雨","artist":"Delos","url":"music/shiluozhiyu.mp3","cover":"https://raw.githubusercontent.com/QiuLuoLin/QiuLinBlogPicture/main/img/202505261514239.jpg"},{"name":"致十年后的我","artist":"矽泽雪真","url":"music/zhishinianhoudewo.mp3","cover":"https://raw.githubusercontent.com/QiuLuoLin/QiuLinBlogPicture/main/img/202505261513297.jpg"},{"name":"abbandone","artist":"やなぎなぎ","url":"music/abbandone.mp3","cover":"https://raw.githubusercontent.com/QiuLuoLin/QiuLinBlogPicture/main/img/202505261627091.jpg"}]`)
+  const musics = JSON.parse(`[{"name":"时落叶影","artist":"Peguin Piano","url":"music/ShiLuoYeYing.mp3","cover":"/!%5B%5D(https:/raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/202505271808998.png)"},{"name":"时落之雨","artist":"Delos","url":"music/shiluozhiyu.mp3","cover":"/!%5B%5D(https:/raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/202505271808961.jpg)"},{"name":"致十年后的我","artist":"矽泽雪真","url":"music/zhishinianhoudewo.mp3","cover":"/!%5B%5D(https:/raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/202505271808036.jpg)"},{"name":"abbandone","artist":"やなぎなぎ","url":"music/abbandone.mp3","cover":"/!%5B%5D(https:/raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/202505271825538.png)"}]`)
   const ap = new APlayer({
     container: document.querySelector('#aplayer'),
     audio: musics,
