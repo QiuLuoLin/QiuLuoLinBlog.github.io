@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"Hello World","path":"2025/05/27/hello-world/"},{"title":"page","path":"2025/05/27/page模板/"},{"title":"github自动化推送","path":"2025/05/27/github自动化推送/"},{"title":"初识L298N模块","path":"2025/05/27/初识L298N模块/"},{"title":"六一前目标","path":"2025/05/27/六一前目标/"}]`)
+  const posts = JSON.parse(`[{"title":"Hello World","path":"2025/05/27/hello-world/"},{"title":"page","path":"2025/05/27/page模板/"},{"title":"github自动化推送","path":"2025/05/27/github自动化推送/"},{"title":"初识L298N模块","path":"2025/05/27/初识L298N模块/"},{"title":"六一前目标","path":"2025/05/27/六一前目标/"},{"title":"page","path":"2025/05/27/2025-5-28/"},{"title":"page","path":"2025/05/27/初识pid算法/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -264,7 +264,7 @@
         </a>
         <a href="/tags">
           <div>
-            <span>3</span>
+            <span>5</span>
             <span>标签</span>
           </div>
         </a>
@@ -327,7 +327,7 @@
       </h5>
       <p class="main-left--subtitle">
         <span>文章数目：</span>
-        <span>5 篇</span>
+        <span>7 篇</span>
       </p>
       <p class="main-left--subtitle">
         <span>最近动态：</span>
@@ -335,7 +335,7 @@
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
-        <span>3天</span>
+        <span>4天</span>
       </p>
       <p class="main-left--subtitle">
         <span>当前版本：</span>
@@ -373,12 +373,94 @@
       </div>
     </div>
     <article class="article-content markdown-body">
-      <p>L298N电机驱动模块</p>
-<p>左侧电源输入端（&gt;5V）为模块提供电源，右侧电源输出端（5V）为目标电机供电；</p>
-<p>其右侧的排针分别为ENA，IA1，IA2，IB2，IB1，ENB</p>
-<p>用跳线帽盖住ENA或ENB就是禁止使用pwm驱动电机，也就是短接ENA则无法自主调速，依靠固定速度驱动电机</p>
-<p>IA1和IA2  或  IBI和IB2 作为PWM的输入，用于控制电机的控速和控向</p>
-<p>上方左右两端是目标电机的电源接出端</p>
+      <p>L298N电机驱动模块（目前尚未正确学习，大概率理解有误）</p>
+<p>①处：out1和out2，电源输出端。用于给电机供电。</p>
+<p>②处：电源输入端（5v~46v）为模块提供电源。</p>
+<p>③处：GND。</p>
+<p>④处：电源输出端（5V）为<strong>编码器</strong>或其他模块供电。</p>
+<p>其右侧的排针分别为ENA，IN1，IN2，IN3，IN4，ENB</p>
+<p>⑤处：ENA</p>
+<p>​	短接（盖上跳线帽 或者 用母-母杜邦线上下相接）会使电机以最大速度工作；</p>
+<p>​	不短接（上下不相接），电机不工作。</p>
+<p>⑥处：IN1和IN2，用于控制电机速度和方向。</p>
+<h3 id="核心信号功能"><a href="#核心信号功能" class="headerlink" title="** 核心信号功能**"></a>** 核心信号功能**</h3><table>
+<thead>
+<tr>
+<th align="left">信号引脚</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>ENA</strong></td>
+<td align="left">使能信号（PWM输入），控制电机<strong>是否工作</strong>和<strong>调速</strong>（高电平有效）。</td>
+</tr>
+<tr>
+<td align="left"><strong>IA1</strong></td>
+<td align="left">方向控制信号1（逻辑电平），与 IA2 组合决定电机转向。</td>
+</tr>
+<tr>
+<td align="left"><strong>IA2</strong></td>
+<td align="left">方向控制信号2（逻辑电平），与 IA1 组合决定电机转向。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="控制逻辑真值表"><a href="#控制逻辑真值表" class="headerlink" title="控制逻辑真值表"></a><strong>控制逻辑真值表</strong></h3><table>
+<thead>
+<tr>
+<th align="left">ENA（PWM）</th>
+<th align="left">IA1</th>
+<th align="left">IA2</th>
+<th align="left">电机状态</th>
+<th align="left">等效电路动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>HIGH&#x2F; PWM</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>正转</strong></td>
+<td align="left">OUT1&#x3D;VS（电源），OUT2&#x3D;GND</td>
+</tr>
+<tr>
+<td align="left"><strong>HIGH&#x2F; PWM</strong></td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left"><strong>反转</strong></td>
+<td align="left">OUT1&#x3D;GND，OUT2&#x3D;VS</td>
+</tr>
+<tr>
+<td align="left"><strong>HIGH&#x2F; PWM</strong></td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left"><strong>快速刹车</strong></td>
+<td align="left">OUT1&#x3D;OUT2&#x3D;VS（短接电机）</td>
+</tr>
+<tr>
+<td align="left"><strong>HIGH&#x2F; PWM</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>惯性停止</strong></td>
+<td align="left">OUT1&#x3D;OUT2&#x3D;高阻态</td>
+</tr>
+<tr>
+<td align="left"><strong>LOW</strong></td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left"><strong>停止</strong></td>
+<td align="left">无输出（电机断电）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>注</strong>：</p>
+<ul>
+<li><code>X</code>表示任意状态（0或1）。</li>
+<li><strong>刹车</strong> vs <strong>停止</strong>：<ul>
+<li>刹车：电机两端短接，快速制动（耗能）。</li>
+<li>停止：电机悬空，惯性滑行。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
 
     </article>
     
@@ -400,7 +482,7 @@
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BF%A1%E5%8F%B7%E5%8A%9F%E8%83%BD"><span class="toc-number">1.</span> <span class="toc-text">** 核心信号功能**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E9%80%BB%E8%BE%91%E7%9C%9F%E5%80%BC%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">控制逻辑真值表</span></a></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
