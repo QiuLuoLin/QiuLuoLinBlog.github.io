@@ -335,7 +335,7 @@
       </p>
       <p class="main-left--subtitle">
         <span>上线时间：</span>
-        <span>4天</span>
+        <span>9天</span>
       </p>
       <p class="main-left--subtitle">
         <span>当前版本：</span>
@@ -373,7 +373,88 @@
       </div>
     </div>
     <article class="article-content markdown-body">
-      
+      <p>闭环与开环：</p>
+<p>​	闭环：输出对象有反馈</p>
+<p>​	开环：仅输出，输出对象不会反馈</p>
+<p>​	pid：闭环控制算法，通过读取编码器数据获得反馈。</p>
+<p>pid是一种基于误差的控制算法，其目标是通过控制 <strong>误差&#x3D;&#x3D;0</strong> 以实现精准调控。</p>
+<p>pid算法是一个经验总结式公式，并非推理而来。</p>
+<p>控制器有：PD控制器，PI控制器，PID控制器</p>
+<p>其中目标值（target），实际值（actual），误差值（error）的关系如下(图源江协)</p>
+<p>红框为实际使用（三个k系数分别是：比例系数、积分系数、微分系数；这样三个项比例项、积分项、微分项分别 由三个系数控制，更加独立）</p>
+<p><img src="https://raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/pid.png" alt="image-20250602153425415"></p>
+<p><strong>比例项（P）：</strong></p>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	与当前时刻的误差有关，与历史误差无关，即实时调整当前输出。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	为了达到系统的响应迅速的效果，比例系数Kp需要调到最合适的数据，因为仅有比例项是直接根据当前误差值去调节输出数据的，而其余的积分项和微分项都涉及使用以前的数据，输出变化较慢。Kp大则容易导致系统超调过大，偏小则容易响应缓慢。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	系统响应最快（由常规数值得到），影响着积分项和微分项的调试。比例系数越大，说明Pid的输出由比例项控制的占比越大。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	纯比例项控制时，系统会存在稳态误差，Kp越大，稳态误差越小。</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+​        纯P算法会有稳态误差，并且Kp值越大，<strong>振荡</strong>越强。</p>
+</li>
+</ul>
+<p><strong>积分项（I）：</strong></p>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	积分项的输出等于从零开始到当前时刻所有误差的累加和与积分项系数的乘积，也就是所有误差*系数的积分，该值与历史时刻有关，通过  （累加和所得值  x  积分项系数Ki ） 的结果作为输出</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	积分项弥补纯比例项算法（纯P算法）所产生的稳态误差，通过不断累积误差调整输出，从而让稳态误差消失</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	系统响应慢（受历史时刻的数据影响）。积分项系数越大，稳态误差消失的越快，但是系统滞后性越高。（即将达到目标值时，由于积分项系数太大导致超的太多，之后降低也是同理，从而需要慢慢振荡到目标值）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+​         纯I算法会导致系统滞后性高，如电机转向，需要先把当前累积的值清空，然后反向增长才能达到反向的目标速度。在动态要求高的平衡控制领域，弊端严重。</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+​        积分项系数Ki的值越大，越容易导致<strong>超调</strong>。</p>
+</li>
+</ul>
+<p><strong>微分项（D）：</strong></p>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	微分项的输出值取决于导数值，与相邻两次误差数值的变化趋势有关，当误差剧烈变化时，微分项会负反馈输出相反的作用力，阻碍误差急剧变化（也就是阻尼）。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​	通过测算的数据变化的导数值（斜率），从而进行有效的负反馈，防止系统超调（使得系统的控制变化更加平滑）。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+​         当实际值越来越接近目标值，且速度越来越快时，这时候误差的变化就很大，斜率就很大（值为负，负向加速度），这种情况下，微分项就会产生阻尼，也就是减小实际值，以此减缓实际值到达目标值的速度，避免实际值变化过大导致超过了目标值，形成超调。</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+​		微分项的系数Kd越大，阻尼效果越强，但是卡顿现象也更严重（变化太慢导致）</p>
+</li>
+</ul>
+<p><strong>稳态误差</strong></p>
+<blockquote>
+<p>​	在了解之前需要强调的是：pid是一种基于误差的控制算法，其目标是通过控制 <strong>误差&#x3D;&#x3D;0</strong> 以实现精准调控。当误差等于零后，pid则不再生效。</p>
+</blockquote>
+<p>​	含义：系统实际输出的值和目标值始终存在一个相对恒定的误差，也就是稳态误差。稳态误差是有方向的，方向是控制对象自发改变pid所控制参数的变化方向，如汽车不施加动力会自动减速， 加热器加热水时水温会自动降低。</p>
+<p><strong>纯P算法：（样例说明）</strong></p>
+<p><img src="https://raw.githubusercontent.com/QiuLuoLin/QiuLuoLinBlogPicture/main/img/%E4%BB%85%E6%AF%94%E4%BE%8B%E9%A1%B9%E7%9A%84pid%E7%AE%97%E6%B3%95.png" alt="image-20250602165911841"></p>
+<p><strong>问：为什么会有稳态误差？</strong></p>
+<p>答：要达到稳态，控制器必须输出一个持续的控制量以抵消扰动（如电机需要恒定电压抵抗摩擦力）。</p>
+<p>但比例控制只在误差存在时才输出控制量，因此系统会<strong>停在某个误差值</strong>，使得恰好平衡扰动，此时误差不再为零。而这个误差值就是稳态误差。</p>
+<p><strong>问：为什么不能在目标值振荡，而在某一值保持稳态？</strong></p>
+<p>答：需要强调的是，纯P算法的输入只和误差有关，因此在目标值时pid停止工作，而在低于目标值时pid会工作，在pid的输出还不如损耗大时，数值会不断下降，当达到稳定值时，使得输出值等于损耗值，从而保持稳态。</p>
+<p><strong>问：那为什么稳态值是X，而不能是Y1，Y2……？</strong></p>
+<p>答：因为单比例项的pid算法的调整只受误差和比例系数控制，在比例系数Kp固定的情况下，由于实际物理世界并非理论世界，所以任何行动都会有损耗，从而无法固定不变地保持在目标值。</p>
+<p>仅有比例项的pid算法只能通过误差进行调整输出，但是当调整的值和物体的损耗值保持一致时，误差不变，这时候外界条件不变的情况下，调整值也不会变化，这也就导致了稳态值只能是X，而不会是Y1，Y2……当然，前面也说过：</p>
+<blockquote>
+<p>​	”纯比例项控制时，系统会存在稳态误差，Kp越大，稳态误差越小。“</p>
+</blockquote>
+<p><strong>超调</strong>：</p>
+<p>​	含义：超调是指系统响应过程中，输出量首次超过目标值的最大偏差量。</p>
+
     </article>
     
     <div class="read-nums">
